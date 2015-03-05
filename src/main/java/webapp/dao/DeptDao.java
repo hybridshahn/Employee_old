@@ -9,12 +9,18 @@ import webapp.model.Dept;
 
 public interface DeptDao {
 	
+	
 	final static String SELECT_BY_DEPTNO = "select * from dept where deptno=?";
 	final static String SELECT_BY_DEPTNO_WITH_EMPS =
 																"select *  "+
 																"from dept d left join emp e "+
 																"on d.deptno = e.deptno "+
-																"where d.deptno = ?";	
+																"where d.deptno = ?";
+	final static String SELECT_ALL = "select * from dept =?";
+	final static String SELECT_ALL_WITH_EMPS =
+																"select *  "+
+																"from dept d left join emp e "+
+																"on d.deptno = e.deptno ";
 	
 	public void setDataSource(DataSource ds);
 	
@@ -23,6 +29,7 @@ public interface DeptDao {
 	 */
 	public Dept selectByDeptno(Integer deptno);//deptno를 갖고 dept를가져오는놈
 	public Dept selectByDeptnoWithEmps(Integer deptno);
+	//둘의공통점은 하나만불러오는거 없으면 null
 
 	/*
 	 * Multiple row
