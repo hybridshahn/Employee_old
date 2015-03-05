@@ -58,14 +58,21 @@ public class DeptInfoWithEmpsController extends HttpServlet {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html; charset=utf-8");
-		PrintWriter out = response.getWriter();
 		log.info("dept called...");
-		out.println("<h1>dept called....");
 		
+		String param = request.getParameter("deptno");//파라미터는 기본적으로 스트링이다.
+		
+		int deptno = 10;
+		
+		deptno = Integer.parseInt(param);
+		
+		
+		//서비스호출부분
 		DeptInfoService service = factory.getBean(DeptInfoService.class);
-		Dept dept = service.getDeptInfo(10);
+		Dept dept = service.getDeptInfoWithEmps(deptno);
 		request.setAttribute("dept", dept);
 		
+		//포워드부분
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/dept/infowithemps.jsp");
 		rd.forward(request, response);
 	}
