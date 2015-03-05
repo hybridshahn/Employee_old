@@ -8,9 +8,13 @@
 		</select>
 		<select id="selectByDeptnoWithEmps" resultMap="deptWithEmps">
 				SELECT *
-				  FROM dept d LEFT JOIN emp e
-				   	  ON d.deptno = e.deptno
+				FROM dept d LEFT JOIN emp e
+					ON d.deptno = e.deptno
 				WHERE d.deptno = #{d.deptno}
+		</select>
+		<select id="selectAll" resultType="webapp.model.Dept">
+				SELECT *
+				FROM dept
 		</select>
 		
 		<resultMap type="webapp.model.Dept" id="deptWithEmps">
