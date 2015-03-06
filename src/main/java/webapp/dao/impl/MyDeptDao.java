@@ -20,7 +20,7 @@ import webapp.dao.DeptDao;
 import webapp.model.Dept;
 import webapp.model.Emp;
 
-public class JdbcDeptDao implements DeptDao{
+public class MyDeptDao implements DeptDao{
 
 	static Log log = LogFactory.getLog(JdbcDeptDao.class);
 	
@@ -152,37 +152,42 @@ public class JdbcDeptDao implements DeptDao{
 		Connection con = DataSourceUtils.getConnection(dataSource);//컨넥션가져왓음
 		
 		List<Dept> list=null;
+		List<Emp> emps=null;
 		
 		try {
 			PreparedStatement pstmt = con.prepareStatement(SELECT_ALL_WITH_EMPS);
 			ResultSet rs = pstmt.executeQuery();
 			
-			Dept dept = null;
-			
 			while(rs.next()) {
-				if (list == null)
-					list = new ArrayList<Dept>();
-				
-				Dept d = new Dept(rs.getInt("deptno"), rs.getString("dname"), rs.getString("loc"));
-				d.setEmps(new ArrayList<Emp>());
-				
-				if (!d.equals(dept)) {
-					dept = d;
-					list.add(dept);
-				}
-				
-				Emp e = new Emp();
-				e.setEmpno(rs.getInt("empno"));
-				e.setEname(rs.getString("ename"));
-				e.setJob(rs.getString("job"));
-				e.setMgr(rs.getInt("mgr"));
-				e.setHiredate(rs.getDate("hiredate"));
-				e.setSal(rs.getFloat("sal"));
-				e.setComm(rs.getFloat("comm"));
-				
-				dept.getEmps().add(e);
-				
+					if (list == null)
+						list = new ArrayList<Dept>();
+					
+					Dept d = new Dept();
+					Emp e = new Emp();
+							
+					d.setDeptno(rs.getInt("deptno"));
+					d.setDname(rs.getString("dname"));
+					d.setLoc(rs.getString("loc"));
+					d.setEmps(emps);
+					int i = rs.getInt("deptno");
+					
+					for (i=10; i<=40; i+=10) {
+						while(rs.next()){
+							if (emps == null)
+								emps = new ArrayList<Emp>();
+							
+							e.setEmpno(rs.getInt("empno"));
+							e.setEname(rs.getString("ename"));
+							e.setJob(rs.getString("job"));
+	
+						emps.add(e);
+						}
+						
+					}
+				list.add(d);
+//				emps.add(e);
 			}
+			
 		} catch (SQLException e) {
 			throw new DataRetrievalFailureException("selectAllWithEmps() fail", e);
 		}
